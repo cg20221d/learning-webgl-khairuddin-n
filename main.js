@@ -21,15 +21,20 @@ function main() {
   uniform vec2 uDelta;
   varying vec3 vColor;
   void main() {
-      //float x = -sin(uTheta) * aPosition.x + cos(uTheta) * aPosition.y;
-      //float y = cos(uTheta) * aPosition.x + sin(uTheta) * aPosition.y;
-      //gl_Position = vec4(x + uDelta.x, y + uDelta.y, 0.0, 1.0);
       vec2 position = aPosition;
-      mat4 translation = mat4(1.0, 0.0, 0.0, 0.0,
-                              0.0, 1.0, 0.0, 0.0,
-                              0.0, 0.0, 1.0, 0.0,
-                              uDelta.x, uDelta.y, 0.0, 1.0);
-      gl_Position = translation * vec4(position, 0.0, 1.0);
+      mat4 rotation = mat4(
+          cos(uTheta), sin(uTheta), 0.0, 0.0,
+          -sin(uTheta), cos(uTheta), 0.0, 0.0,
+          0.0, 0.0, 1.0, 0.0,
+          0.0, 0.0, 0.0, 1.0
+      );
+      mat4 translation = mat4(
+          1.0, 0.0, 0.0, 0.0,
+          0.0, 1.0, 0.0, 0.0,
+          0.0, 0.0, 1.0, 0.0,
+          uDelta.x, uDelta.y, 0.0, 1.0
+      );
+      gl_Position = translation * rotation * vec4(position, 0.0, 1.0);
       vColor = aColor;
   }
   `;
@@ -115,12 +120,10 @@ function main() {
       gl.clearColor(1.0,      0.65,    0.0,    1.0);  // Oranye
       //            Merah     Hijau   Biru    Transparansi
       gl.clear(gl.COLOR_BUFFER_BIT);
-      /*
       if (!freeze) {
           theta += 0.1;
           gl.uniform1f(uTheta, theta);
       }
-      */
       horizontalDelta += horizontalSpeed;
       verticalDelta -= verticalSpeed;
       gl.uniform2f(uDelta, horizontalDelta, verticalDelta);
