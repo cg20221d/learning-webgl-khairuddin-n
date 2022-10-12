@@ -34,7 +34,7 @@ function main() {
           0.0, 0.0, 1.0, 0.0,
           uDelta.x, uDelta.y, 0.0, 1.0
       );
-      gl_Position = translation * rotation * vec4(position, 0.0, 1.0);
+      gl_Position = rotation * translation * vec4(position, 0.0, 1.0);
       vColor = aColor;
   }
   `;
